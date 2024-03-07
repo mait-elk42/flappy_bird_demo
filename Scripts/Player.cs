@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class Player : MonoBehaviour
 {
+    public GameObject wmsg;
     private Rigidbody2D rb;
     private bool alive;
     void Awake()
@@ -18,6 +19,8 @@ public class Player : MonoBehaviour
 
     void Update()
     {
+        if (transform.position.y <= -4.5f)
+            OnDie();
         if (Input.GetKeyDown(KeyCode.Space))
             OnClickScreen();
     }
@@ -25,6 +28,18 @@ public class Player : MonoBehaviour
     public void OnClickScreen()
     {
         if (alive)
-            rb.velocity = Vector2.up * 6;
+            rb.velocity = Vector2.up * 5;
+        print("jump!");
+    }
+    void OnCollisionEnter2D(Collision2D collision)
+    {
+        if (collision.gameObject.tag == "Pipe")
+            OnDie();
+    }
+    void    OnDie()
+    {
+        print("Game Over!");
+        alive = false;
+        Time.timeScale = 0;
     }
 }
